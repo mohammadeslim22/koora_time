@@ -89,6 +89,7 @@ class ComingMatchWidget extends StatelessWidget {
                         ? Button(
                             onPressed: () async {
                               try {
+                                //TODO: this should take card infos
                                 await sl<ApiProvider>().payAndRegister(
                                   'temp',
                                   'temp',
