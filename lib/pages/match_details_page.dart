@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import'dart:io' show Platform;
+import 'dart:io' show Platform;
 import 'package:elmalaab/data/api_provider.dart';
 import 'package:elmalaab/di.dart';
 import 'package:elmalaab/models/match.dart';
@@ -22,29 +22,23 @@ import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
 class MatchDetailsPage extends StatefulWidget {
+  final FootballMatch match;
 
-final FootballMatch match;
-
-    const MatchDetailsPage({
+  const MatchDetailsPage({
     Key key,
     @required this.match,
   }) : super(key: key);
 
-
-@override
-State<MatchDetailsPage> createState() => _MatchDetailsPage();
-
+  @override
+  State<MatchDetailsPage> createState() => _MatchDetailsPage();
 }
 
-
 class _MatchDetailsPage extends State<MatchDetailsPage> {
-  
-FootballMatch match;
-String buttonTitle = 'انضم الآن';
+  FootballMatch match;
+  String buttonTitle = 'انضم الآن';
 
-@override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -53,9 +47,6 @@ String buttonTitle = 'انضم الآن';
 
   @override
   Widget build(BuildContext context) {
-
-    
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -225,16 +216,14 @@ String buttonTitle = 'انضم الآن';
       ),
       bottomNavigationBar: bottomWidget(context),
     );
-
-    
   }
 
   Future<void> _shareMatch() async {
     try {
       final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://elmalaab.page.link/match',
-      //  link: Uri.parse('https://google.com/match/${match.id}'), 
-        link: Uri.parse('https://kooratime.net'), 
+        //  link: Uri.parse('https://google.com/match/${match.id}'),
+        link: Uri.parse('https://kooratime.net'),
         androidParameters: AndroidParameters(
           packageName: 'com.abdullah.koratime',
           minimumVersion: 1,
@@ -246,11 +235,11 @@ String buttonTitle = 'انضم الآن';
         ),
       );
 
-    //  final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
-    //  final Uri shortUrl = shortDynamicLink.shortUrl;
-    
-    final Uri dynamicUrl = await parameters.buildUrl();
-    final Uri shortUrl =  dynamicUrl;
+      //  final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
+      //  final Uri shortUrl = shortDynamicLink.shortUrl;
+
+      final Uri dynamicUrl = await parameters.buildUrl();
+      final Uri shortUrl = dynamicUrl;
 
       Share.share(
           'لقد تمت دعوتك للمشاركة في التمرين يوم ${CustomDateUtils.getWeekDay(match.dateTime.weekday)} الساعة ${CustomDateUtils.getTime(match.dateTime)} ${CustomDateUtils.getTimePeriod(match.dateTime)} في ${match.playgroundName}'
@@ -268,112 +257,106 @@ String buttonTitle = 'انضم الآن';
   Widget bottomWidget(BuildContext _context) {
     if (match.matchStatus == MatchStatus.NOT_JOINED) {
       if (match.availableSeats > 0) {
-        return  Padding(
+        return Padding(
           padding: const EdgeInsets.all(16),
           child: Button(
-            onPressed: buttonTitle.contains('انضم الآن') ?   () async {
-              showModalBottomSheet(
-                  context: _context,
-                  shape: ContinuousRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(32))),
-                  builder: (context) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Center(
-                            child: Image.asset(
-                              'assets/images/vectorpayment.png',
-                              height: 100,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            'الإنضمام',
-                            style: TextStyle(
-                              fontFamily: 'DINNextLTArabic',
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'ودفع ${match.price} ريال',
-                            style: TextStyle(
-                              fontFamily: 'DINNextLTArabic',
-                              fontSize: 14,
-                              color: Color(0xFF191919),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          ListTile(
-                            title: Text(
-                              ' فيزا او مدى',
-                              style: TextStyle(
-                                color: Color(0xFF191919),
-                                fontFamily: 'DINNextLTArabic',
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            onTap: ()  {
-
-
-                              setState(() {
-                                buttonTitle = "الرجاء الانتظار...";
-                              });
-                              Navigator.pop(context);
-                           //   Navigator.of(context).push(MaterialPageRoute(
-                           //       builder: (_) => VisaPaymentPage(
-                          //            matchId: match.id, price: match.price)));
-                               payment(match.id, _context);
-
-                                
-
-
-
-
-                            },
-                          ) ,
-                          Divider(height: 1),
-                          //  Platform.isIOS ? ListTile(
-                          //   title: Text(
-                          //     'دفع Apple Pay',
-                          //     style: TextStyle(
-                          //       color: Color(0xFF191919),
-                          //       fontFamily: 'DINNextLTArabic',
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.w500,
-                          //     ),
-                          //   ),
-                          //   onTap: () {
-                          //     Navigator.pop(context);
-                          //   },
-                          // ): Divider(height: 0),
-                          Divider(height: 1),
-                          ListTile(
-                            title: Center(
-                              child: Text(
-                                'إلغاء',
-                                style: TextStyle(
-                                  color: Color(0xFFB15353),
-                                  fontFamily: 'DINNextLTArabic',
-                                  fontSize: 14,
+            onPressed: buttonTitle.contains('انضم الآن')
+                ? () async {
+                    showModalBottomSheet(
+                        context: _context,
+                        shape: ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(32))),
+                        builder: (context) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Center(
+                                  child: Image.asset(
+                                    'assets/images/vectorpayment.png',
+                                    height: 100,
+                                  ),
                                 ),
-                              ),
+                                SizedBox(height: 16),
+                                Text(
+                                  'الإنضمام',
+                                  style: TextStyle(
+                                    fontFamily: 'DINNextLTArabic',
+                                    fontSize: 14,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'ودفع ${match.price} ريال',
+                                  style: TextStyle(
+                                    fontFamily: 'DINNextLTArabic',
+                                    fontSize: 14,
+                                    color: Color(0xFF191919),
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                ListTile(
+                                  title: Text(
+                                    ' فيزا او مدى',
+                                    style: TextStyle(
+                                      color: Color(0xFF191919),
+                                      fontFamily: 'DINNextLTArabic',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      buttonTitle = "الرجاء الانتظار...";
+                                    });
+                                    Navigator.pop(context);
+                                    //   Navigator.of(context).push(MaterialPageRoute(
+                                    //       builder: (_) => VisaPaymentPage(
+                                    //            matchId: match.id, price: match.price)));
+                                    payment(match.id, _context);
+                                  },
+                                ),
+                                Divider(height: 1),
+                                //  Platform.isIOS ? ListTile(
+                                //   title: Text(
+                                //     'دفع Apple Pay',
+                                //     style: TextStyle(
+                                //       color: Color(0xFF191919),
+                                //       fontFamily: 'DINNextLTArabic',
+                                //       fontSize: 16,
+                                //       fontWeight: FontWeight.w500,
+                                //     ),
+                                //   ),
+                                //   onTap: () {
+                                //     Navigator.pop(context);
+                                //   },
+                                // ): Divider(height: 0),
+                                Divider(height: 1),
+                                ListTile(
+                                  title: Center(
+                                    child: Text(
+                                      'إلغاء',
+                                      style: TextStyle(
+                                        color: Color(0xFFB15353),
+                                        fontFamily: 'DINNextLTArabic',
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
                             ),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  });
-            } : null,
+                          );
+                        });
+                  }
+                : null,
             title: buttonTitle,
           ),
         );
@@ -418,42 +401,29 @@ String buttonTitle = 'انضم الآن';
     return null;
   }
 
-
-  void payment (int matchId , BuildContext context) async {
-
- try {
-      String paymentUrl = await sl<ApiProvider>().payAndRegister(
-    'temp',
-    'temp',
-      1,
-      1,
-      1,
-      match.id
-      );
+  void payment(int matchId, BuildContext context) async {
+    try {
+      String paymentUrl = await sl<ApiProvider>()
+          .payAndRegister('temp', 'temp', 1, 1, 1, match.id);
       String url = paymentUrl.replaceAll("/", "").replaceAll('"', '');
       print("paymentUrl = " + url);
-      
+
       Navigator.push(
-        context,
-          MaterialPageRoute(
-              builder: (context) => YourWebView(url)));
+          context, MaterialPageRoute(builder: (context) => YourWebView(url)));
 
-Future.delayed(Duration(seconds: 1) , ()=> {
-
-    setState(() {
-          buttonTitle = 'انضم الآن';
-        })
-
-});
-
-
+      Future.delayed(
+          Duration(seconds: 1),
+          () => {
+                setState(() {
+                  buttonTitle = 'انضم الآن';
+                })
+              });
     } catch (e) {
       print("paymentUrl =  Err -------");
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
-
 }
 
 class _UnJoinButton extends StatefulWidget {
@@ -523,19 +493,13 @@ class _UnJoinButtonState extends State<_UnJoinButton> {
       ),
     );
   }
-
-
 }
-
-
 
 class YourWebView extends StatelessWidget {
   String url;
   bool isFinshed = false;
 
-
   YourWebView(this.url);
-
 
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
@@ -548,66 +512,57 @@ class YourWebView extends StatelessWidget {
           leading: new IconButton(
               icon: new Icon(Icons.close),
               onPressed: () {
-              
-              if(isFinshed) {
-                      Provider.of<MatchProvider>(context, listen: false)
-                              .getMyComingMatches();
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-              } else {
-                
-                Navigator.pop(context);
-              }
-               
+                if (isFinshed) {
+                  Provider.of<MatchProvider>(context, listen: false)
+                      .getMyComingMatches();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                } else {
+                  Navigator.pop(context);
+                }
               }),
         ),
         body: Builder(builder: (BuildContext context) {
           return WebView(
-            initialUrl: url.replaceAll("\\", "/") , //Uri.encodeFull(url.replaceFirst("\\", "//")), //url.replaceFirst("//", "\\"), //'about:blank', //Uri.encodeFull(url),
+            initialUrl: url.replaceAll("\\",
+                "/"), //Uri.encodeFull(url.replaceFirst("\\", "//")), //url.replaceFirst("//", "\\"), //'about:blank', //Uri.encodeFull(url),
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
               // webViewController.loadUrl(Uri.encodeFull(url));
-               print("----URL---" + url);
-               print("----URL-REPLACE--" + url.replaceAll("\\", "/"));
-
+              print("----URL---" + url);
+              print("----URL-REPLACE--" + url.replaceAll("\\", "/"));
             },
             debuggingEnabled: true,
             onPageFinished: (String url) {
-              //https://justdemo.almusand.com/tap/check?tap_id=chg_TS051620211200c9KQ1406099 
+              //https://justdemo.almusand.com/tap/check?tap_id=chg_TS051620211200c9KQ1406099
               SystemChannels.textInput.invokeMethod('TextInput.hide');
-              
+
               if (url.contains("tap/check?tap_id")) {
-                    
-                     isFinshed = true;
+                isFinshed = true;
               }
               print('Page finished loading: $url');
             },
             gestureRecognizers: null,
-          //  gestureNavigationEnabled: false
+            //  gestureNavigationEnabled: false
           );
         }));
   }
 
-  _loadHtmlFromAssets(WebViewController webViewController , String url) async {
-    webViewController.loadUrl( Uri.dataFromString(
-        loadHtml(url),
-        mimeType: 'text/html',
-        encoding: Encoding.getByName('utf-8')
-    ).toString());
+  _loadHtmlFromAssets(WebViewController webViewController, String url) async {
+    webViewController.loadUrl(Uri.dataFromString(loadHtml(url),
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 
-String loadHtml (String url) {
+  String loadHtml(String url) {
+    String pageHeader =
+        '<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">';
+    String html =
+        '<div style="display:flex;" ><iframe style="flex: 1; border: none;" src="${url}" seamless></iframe></div>';
 
-
-String pageHeader = '<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">';
-String html  =   '<div style="display:flex;" ><iframe style="flex: 1; border: none;" src="${url}" seamless></iframe></div>';
-
-  return html;
+    return html;
   }
-
 }
-
-
 
 //class YourWebView extends StatelessWidget {
 //   String url;
@@ -624,16 +579,16 @@ String html  =   '<div style="display:flex;" ><iframe style="flex: 1; border: no
 //           leading: new IconButton(
 //               icon: new Icon(Icons.close),
 //               onPressed: () {
-              
+
 //               if(isFinshed) {
 //                       Provider.of<MatchProvider>(context, listen: false)
 //                               .getMyComingMatches();
 //                         Navigator.of(context).popUntil((route) => route.isFirst);
 //               } else {
-                
+
 //                 Navigator.pop(context);
 //               }
-               
+
 //               }),
 //         ),
 //         body: Builder(builder: (BuildContext context) {
@@ -642,14 +597,13 @@ String html  =   '<div style="display:flex;" ><iframe style="flex: 1; border: no
 //             onWebViewCreated: (controller) {
 //                           webViewController = controller;
 //             },
-            
-            
+
 //             // onPageFinished: (String url) {
-//             //   //https://justdemo.almusand.com/tap/check?tap_id=chg_TS051620211200c9KQ1406099 
+//             //   //https://justdemo.almusand.com/tap/check?tap_id=chg_TS051620211200c9KQ1406099
 //             //   SystemChannels.textInput.invokeMethod('TextInput.hide');
-              
+
 //             //   if (url.contains("tap/check?tap_id")) {
-                    
+
 //             //          isFinshed = true;
 //             //   }
 //             //   print('Page finished loading: $url');

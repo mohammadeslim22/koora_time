@@ -89,14 +89,14 @@ class ComingMatchWidget extends StatelessWidget {
                         ? Button(
                             onPressed: () async {
                               try {
-                            //     await sl<ApiProvider>().payAndRegister(
-                            //    //   'temp',
-                            //  //     'temp',
-                            // //      1,
-                            //  //     1,
-                            // //      1,
-                            //       match.id,
-                            //     );
+                                await sl<ApiProvider>().payAndRegister(
+                                  'temp',
+                                  'temp',
+                                  1,
+                                  1,
+                                  1,
+                                  match.id,
+                                );
                                 await Provider.of<MatchProvider>(context,
                                         listen: false)
                                     .refreshMatches();

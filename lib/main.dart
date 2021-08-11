@@ -53,7 +53,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    initApp();
+    initAppttt();
     sl<ApiProvider>().client.interceptors.add(
       InterceptorsWrapper(
         onError: (DioError e, handler) {
@@ -99,7 +99,7 @@ class _AppState extends State<App> {
     }
   }
 
-  Future<void> initApp() async {
+  Future<void> initAppttt() async {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) async {
         final appProvider = Provider.of<AppProvider>(context, listen: false);
