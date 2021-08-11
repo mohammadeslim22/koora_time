@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "40276925269",
+    "project_id": "elmalaab-efc9f",
+    "storage_bucket": "elmalaab-efc9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40276925269:android:73e4b40dbe5a32cd31addc",
+        "android_client_info": {
+          "package_name": "com.abdullah.koratime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40276925269-3tb4vcllob19pr44h483v65as4qen1o8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTs-UssFYNPlsb_tj3wePOT3cjEc85H3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40276925269-3tb4vcllob19pr44h483v65as4qen1o8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "40276925269-5eqt1l9apvj5d2en5dn4sh53mghr5d99.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.almusand.malaab"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
