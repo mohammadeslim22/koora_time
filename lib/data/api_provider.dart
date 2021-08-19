@@ -43,10 +43,9 @@ class ApiProvider {
     @required String password,
   }) async {
     try {
-
-print("---id");
-print(id);
-print("---password" + password);
+      print("---id");
+      print(id);
+      print("---password" + password);
 
       Response response = await client.patch(
         '/numbers/$id/verify',
@@ -62,7 +61,6 @@ print("---password" + password);
         return User.fromJson(response.data['data']);
       }
     } catch (e) {
-
       throw Exception(e.response.data['errors']
           [e.response.data['errors'].keys.toList()[0]][0]);
     }
@@ -139,7 +137,6 @@ print("---password" + password);
       );
       return User.fromJson(response.data['data']);
     } catch (e) {
-  
       throw Exception(e.response.data['errors']
           [e.response.data['errors'].keys.toList()[0]][0]);
     }
@@ -180,13 +177,14 @@ print("---password" + password);
 
   Future<void> sendNotificationToken(String token) async {
     try {
-      await client.patch(
+      Response test = await client.patch(
         '/tokens',
         data: json.encode({'token': token}),
       );
+      print("test $test $token ${test.data} status code ${test.statusCode}");
     } catch (e) {
       throw Exception(e.response.data['errors']
-      [e.response.data['errors'].keys.toList()[0]][0]);
+          [e.response.data['errors'].keys.toList()[0]][0]);
     }
   }
 
@@ -216,8 +214,6 @@ print("---password" + password);
     try {
       Response response = await client.get('/games');
 
-
-
       return FootballMatch.fromJsonList(
           response.data['data'], MatchStatus.NOT_JOINED);
     } catch (e) {
@@ -232,7 +228,7 @@ print("---password" + password);
       return FootballMatch.fromJson(
           response.data['data'], MatchStatus.NOT_JOINED);
     } catch (e) {
-      throw Exception(e.response.data['errors'] 
+      throw Exception(e.response.data['errors']
           [e.response.data['errors'].keys.toList()[0]][0]);
     }
   }
@@ -282,22 +278,20 @@ print("---password" + password);
       print("-----RES-----");
       print(response);
 
-      if(BasicResponse.fromJson(response.data).success == false && BasicResponse.fromJson(response.data).message != null){
-        
+      if (BasicResponse.fromJson(response.data).success == false &&
+          BasicResponse.fromJson(response.data).message != null) {
         print("--------Already regestired--------");
-       throw Exception(BasicResponse.fromJson(response.data).message);
+        throw Exception(BasicResponse.fromJson(response.data).message);
+      }
 
-     }
-
-    print("--------NEW REGISTERATION--------");
-    String url = BasicResponse.fromJson(response.data).url;
-     return url;
-   } catch (e) {
+      print("--------NEW REGISTERATION--------");
+      String url = BasicResponse.fromJson(response.data).url;
+      return url;
+    } catch (e) {
       throw Exception(e.response.data['errors']
           [e.response.data['errors'].keys.toList()[0]][0]);
     }
   }
-
 
   Future<void> unJoinMatch(int matchId) async {
     try {
@@ -307,5 +301,4 @@ print("---password" + password);
           [e.response.data['errors'].keys.toList()[0]][0]);
     }
   }
-  
 }

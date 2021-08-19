@@ -20,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DependencyInjection.init();
   await Firebase.initializeApp();
+
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, badge: true, sound: true);
   runApp(MetaWidget());
@@ -90,6 +91,16 @@ class _AppState extends State<App> {
   }
 
   Widget scaffoldHomeWidget() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      try {
+        NotificationSettings settings =
+            await FirebaseMessaging.instance.requestPermission();
+        if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+          final token = await FirebaseMessaging.instance.getToken();
+          sl<ApiProvider>().sendNotificationToken(token);
+        }
+      } catch (e) {}
+    });
     if (sl<LocalProvider>().getUser()?.token != null) {
       return MainNavigationPage();
     } else if (sl<LocalProvider>().getOnBoardingShown()) {
