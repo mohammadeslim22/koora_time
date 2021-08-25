@@ -179,6 +179,8 @@ class _MatchDetailsPage extends State<MatchDetailsPage> {
                     ListTile(
                       contentPadding: const EdgeInsets.all(0),
                       onTap: () {
+                        print(
+                            "match.playgroundLocation.lat ${match.playgroundLocation.lat} match.playgroundLocation.lng ${match.playgroundLocation.lng}");
                         MapUtils.openMap(
                           match.playgroundLocation.lat,
                           match.playgroundLocation.lng,
